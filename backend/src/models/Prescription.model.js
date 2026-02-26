@@ -53,6 +53,87 @@ const interventionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// ── Gemini Explainability Schemas ────────────────────────────
+
+const geminiInterventionSchema = new mongoose.Schema(
+  {
+    priority: { type: String, enum: ['urgent', 'high', 'medium', 'low'] },
+    action_type: String,
+    message: String,
+    related_drugs: [String],
+    evidence: String,
+  },
+  { _id: false }
+);
+
+const geminiInteractionExplanationSchema = new mongoose.Schema(
+  {
+    drugA: String,
+    drugB: String,
+    severity: { type: String, enum: ['low', 'moderate', 'high', 'critical', 'unknown'] },
+    mechanism: String,
+    clinical_significance: String,
+    evidence_basis: String,
+    uncertain: Boolean,
+  },
+  { _id: false }
+);
+
+const geminiAnomalyExplanationSchema = new mongoose.Schema(
+  {
+    signal_name: String,
+    score: Number,
+    clinical_meaning: String,
+    suggested_cause: String,
+    uncertain: Boolean,
+  },
+  { _id: false }
+);
+
+const geminiUncertaintyFlagSchema = new mongoose.Schema(
+  {
+    field: String,
+    reason: String,
+    impact: String,
+  },
+  { _id: false }
+);
+
+const geminiOcrUncertaintySchema = new mongoose.Schema(
+  {
+    text: String,
+    confidence: Number,
+    concern: String,
+  },
+  { _id: false }
+);
+
+const geminiReasoningSchema = new mongoose.Schema(
+  {
+    explainability_summary: String,
+    interaction_explanations: [geminiInteractionExplanationSchema],
+    anomaly_explanations: [geminiAnomalyExplanationSchema],
+    interventions: [geminiInterventionSchema],
+    uncertainty_flags: [geminiUncertaintyFlagSchema],
+    ocr_uncertainty_flags: [geminiOcrUncertaintySchema],
+    entity_reconciliation: {
+      missing_fields: [String],
+      ambiguous_entities: [String],
+      notes: String,
+    },
+    gemini_status: {
+      type: String,
+      enum: ['success', 'failed', 'skipped'],
+      default: 'skipped',
+    },
+    reasoning_version: { type: String, default: 'gemini_reasoning_v1' },
+    durationMs: Number,
+    error: String,
+    generatedAt: Date,
+  },
+  { _id: false }
+);
+
 const moduleStatusSchema = new mongoose.Schema(
   {
     status: { type: String, enum: ['success', 'failed', 'skipped'], default: 'success' },
@@ -103,12 +184,16 @@ const prescriptionSchema = new mongoose.Schema(
       imageQuality: { type: String, enum: ['poor', 'fair', 'good', 'excellent'] },
     },
 
+    // Gemini Explainable AI output
+    geminiReasoning: geminiReasoningSchema,
+
     // Pipeline tracking
     pipelineStatus: {
       ocr: moduleStatusSchema,
       structuring: moduleStatusSchema,
       anomaly: moduleStatusSchema,
       intervention: moduleStatusSchema,
+      gemini: moduleStatusSchema,
       overall: { type: String, enum: ['queued', 'processing', 'completed', 'partial', 'failed'], default: 'queued' },
     },
 

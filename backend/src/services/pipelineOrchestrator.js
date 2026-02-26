@@ -8,7 +8,8 @@
  *   2. Structuring → extract entities from text
  *   3. Anomaly detection → ML pipeline (preferred) or rule-based fallback
  *   4. Intervention engine → generate clinical suggestions
- *   5. Persist → save all results to MongoDB
+ *   5. Gemini reasoning → explainability, interaction explanations, uncertainty flags (non-critical)
+ *   6. Persist → save all results to MongoDB
  */
 
 const Prescription = require('../models/Prescription.model');
@@ -17,6 +18,7 @@ const { callMLPipeline } = require('./mlClient');
 const { structureText } = require('./structuringService');
 const { detectAnomalies } = require('./anomalyDetector');
 const { generateInterventions } = require('./interventionEngine');
+const { runGeminiReasoning } = require('./geminiClient');
 const { createLogger } = require('../utils/logger');
 
 const log = createLogger('Pipeline');
@@ -38,6 +40,7 @@ async function runPipeline(prescriptionId, imagePath) {
     structuring: { status: 'skipped', durationMs: 0 },
     anomaly: { status: 'skipped', durationMs: 0 },
     intervention: { status: 'skipped', durationMs: 0 },
+    gemini: { status: 'skipped', durationMs: 0 },
     overall: 'processing',
   };
 
@@ -194,14 +197,51 @@ async function runPipeline(prescriptionId, imagePath) {
   }
 
   // ═══════════════════════════════════════════════
-  // STEP 5: Finalize
+  // STEP 5: Gemini Explainable AI Reasoning (non-critical)
+  // Pipeline will ALWAYS continue even if this step fails.
   // ═══════════════════════════════════════════════
-  const anyFailed = Object.values(pipelineStatus)
-    .filter((v) => typeof v === 'object')
-    .some((m) => m.status === 'failed');
-  const allFailed = Object.values(pipelineStatus)
-    .filter((v) => typeof v === 'object')
-    .every((m) => m.status === 'failed');
+  try {
+    const geminiStart = Date.now();
+    const geminiResult = await runGeminiReasoning({
+      prescriptionId,
+      ocrText,
+      entities,
+      interactions,
+      anomalyFlags,
+    });
+
+    pipelineStatus.gemini = {
+      status: geminiResult.gemini_status === 'success' ? 'success' : 'failed',
+      error: geminiResult.gemini_status !== 'success' ? (geminiResult.error || 'Gemini unavailable') : null,
+      durationMs: Date.now() - geminiStart,
+    };
+
+    // geminiClient handles its own DB persistence — we only update the pipelineStatus here
+    await safeUpdate(prescriptionId, {
+      'pipelineStatus.gemini': pipelineStatus.gemini,
+    });
+
+    log.info('Gemini step done', {
+      status: geminiResult.gemini_status,
+      interventionCount: geminiResult.interventions?.length,
+      durationMs: pipelineStatus.gemini.durationMs,
+    });
+  } catch (err) {
+    // This branch should never fire — runGeminiReasoning never throws
+    log.error('Gemini step unexpectedly crashed', { error: err.message });
+    pipelineStatus.gemini = { status: 'failed', error: err.message, durationMs: 0 };
+    await safeUpdate(prescriptionId, { 'pipelineStatus.gemini': pipelineStatus.gemini });
+  }
+
+  // ═══════════════════════════════════════════════
+  // STEP 6: Finalize
+  // ═══════════════════════════════════════════════
+  // Gemini failure does NOT count against overall pipeline status
+  const nonGeminiStatuses = Object.entries(pipelineStatus)
+    .filter(([k, v]) => k !== 'gemini' && k !== 'overall' && typeof v === 'object');
+
+  const anyFailed = nonGeminiStatuses.some(([, m]) => m.status === 'failed');
+  const allFailed = nonGeminiStatuses.every(([, m]) => m.status === 'failed');
 
   pipelineStatus.overall = allFailed ? 'failed' : anyFailed ? 'partial' : 'completed';
   const finalStatus = allFailed ? 'failed' : 'completed';

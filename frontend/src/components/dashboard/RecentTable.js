@@ -19,7 +19,7 @@ const PIPELINE_BADGE = {
 export default function RecentTable({ prescriptions }) {
   return (
     <div className="glass-card rounded-2xl p-6">
-      <h4 className="font-semibold text-primary-800 mb-4">Recent Prescriptions</h4>
+      <h4 className="font-semibold text-navy mb-4">Recent Prescriptions</h4>
       {prescriptions.length === 0 ? (
         <p className="text-gray-400 text-sm">No prescriptions yet</p>
       ) : (
