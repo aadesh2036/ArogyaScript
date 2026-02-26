@@ -48,7 +48,7 @@ def run_pipeline(image_path: str) -> dict:
         "interactions": interactions,
         "riskScore": risk_score,
         "metadata": {
-            "ocrEngine": "PaddleOCR",
+            "ocrEngine": "EasyOCR",
             "processingTimeMs": elapsed,
             "imageQuality": "good",
         },

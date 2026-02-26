@@ -5,6 +5,7 @@ const {
   uploadPrescription,
   getPrescriptions,
   getPrescriptionById,
+  getPipelineStatus,
 } = require('../controllers/prescription.controller');
 
 router.use(protect);
@@ -12,5 +13,6 @@ router.use(protect);
 router.post('/upload', upload.single('image'), uploadPrescription);
 router.get('/', getPrescriptions);
 router.get('/:id', getPrescriptionById);
+router.get('/:id/status', getPipelineStatus);
 
 module.exports = router;

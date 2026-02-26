@@ -20,20 +20,27 @@ export default function UploadZone({ onUpload, loading }) {
   return (
     <div
       {...getRootProps()}
-      className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition ${
-        isDragActive ? 'border-primary-500 bg-primary-50' : 'border-gray-300 hover:border-primary-400'
+      className={`glass-card rounded-2xl p-12 text-center cursor-pointer transition-all border-2 border-dashed ${
+        isDragActive
+          ? 'border-primary-400 bg-primary-50/30 scale-[1.01]'
+          : 'border-white/40 hover:border-primary-300 hover:shadow-glass-lg'
       } ${loading ? 'opacity-50 pointer-events-none' : ''}`}
     >
       <input {...getInputProps()} />
-      <FiUploadCloud className="mx-auto text-4xl text-primary-500 mb-3" />
+      <div className="w-16 h-16 rounded-2xl glass-btn mx-auto mb-4 flex items-center justify-center">
+        <FiUploadCloud className="text-white" size={28} />
+      </div>
       {loading ? (
-        <p className="text-gray-500">Analyzing prescription...</p>
+        <>
+          <p className="text-primary-700 font-medium">Analyzing prescription...</p>
+          <div className="mt-3 flex justify-center"><div className="w-6 h-6 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" /></div>
+        </>
       ) : isDragActive ? (
-        <p className="text-primary-600 font-medium">Drop the image here</p>
+        <p className="text-primary-600 font-semibold text-lg">Drop the image here</p>
       ) : (
         <>
-          <p className="text-gray-600 font-medium">Drag & drop a prescription image</p>
-          <p className="text-sm text-gray-400 mt-1">or click to select (JPEG, PNG, WebP — max 10 MB)</p>
+          <p className="text-primary-700 font-medium text-lg">Drag & drop a prescription image</p>
+          <p className="text-sm text-primary-500/60 mt-2">or click to select (JPEG, PNG, WebP — max 10 MB)</p>
         </>
       )}
     </div>

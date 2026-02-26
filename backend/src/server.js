@@ -35,8 +35,9 @@ mongoose
     app.listen(PORT, () => console.log(`✓ Server running on port ${PORT}`));
   })
   .catch((err) => {
-    console.error('✗ MongoDB connection error:', err.message);
-    process.exit(1);
+    console.warn('⚠ MongoDB connection failed:', err.message);
+    console.log('⚠ Running without database (demo mode)');
+    app.listen(PORT, () => console.log(`✓ Server running on port ${PORT} (no database)`));
   });
 
 module.exports = app;

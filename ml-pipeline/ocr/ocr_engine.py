@@ -1,8 +1,8 @@
 """
-OCR Engine — uses PaddleOCR to extract text lines from preprocessed image.
+OCR Engine — uses EasyOCR to extract text lines from preprocessed image.
 """
 
-from paddleocr import PaddleOCR
+import easyocr
 import numpy as np
 
 
@@ -12,7 +12,7 @@ _ocr = None
 def _get_ocr():
     global _ocr
     if _ocr is None:
-        _ocr = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
+        _ocr = easyocr.Reader(['en'])
     return _ocr
 
 
@@ -22,17 +22,18 @@ def extract_text(image: np.ndarray) -> list[dict]:
     Returns list of { "text": str, "confidence": float, "bbox": list }
     """
     ocr = _get_ocr()
-    results = ocr.ocr(image, cls=True)
+    results = ocr.readtext(image)
 
     lines = []
-    if results and results[0]:
-        for line in results[0]:
-            bbox, (text, conf) = line
-            lines.append({
-                "text": text.strip(),
-                "confidence": round(conf, 3),
-                "bbox": bbox,
-            })
+    for result in results:
+        bbox, text, conf = result
+        # Convert numpy types to plain Python for JSON serialization
+        clean_bbox = [[float(pt[0]), float(pt[1])] for pt in bbox]
+        lines.append({
+            "text": text.strip(),
+            "confidence": round(float(conf), 3),
+            "bbox": clean_bbox,
+        })
 
     # Sort by vertical position (top to bottom)
     lines.sort(key=lambda l: l["bbox"][0][1])

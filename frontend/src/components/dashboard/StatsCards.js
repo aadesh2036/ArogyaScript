@@ -9,8 +9,8 @@ export default function StatsCards({ stats }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((c, i) => (
-        <div key={i} className="bg-white rounded-xl p-5 shadow-sm">
-          <p className="text-sm text-gray-500">{c.label}</p>
+        <div key={i} className="glass-card rounded-2xl p-5 hover:shadow-glass-lg transition-all">
+          <p className="text-sm text-primary-600/60">{c.label}</p>
           <p className={`text-2xl font-bold mt-1 ${c.color}`}>{c.value}</p>
         </div>
       ))}
