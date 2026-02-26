@@ -1,42 +1,21 @@
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const path = require('path');
+const app = require('./app');
+const connectDB = require('./config/db');
+const logger = require('./utils/logger');
 
-const authRoutes = require('./routes/auth.routes');
-const prescriptionRoutes = require('./routes/prescription.routes');
-const dashboardRoutes = require('./routes/dashboard.routes');
-const { errorHandler } = require('./middleware/error.middleware');
+// Register pipeline event listeners
+require('./services/pipelineOrchestrator');
 
-const app = express();
+const PORT = parseInt(process.env.PORT, 10) || 5000;
 
-// ── Middleware ──────────────────────────────────────────
-app.use(cors());
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
-// ── Routes ─────────────────────────────────────────────
-app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date() }));
-app.use('/api/auth', authRoutes);
-app.use('/api/prescriptions', prescriptionRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-
-// ── Error handler ──────────────────────────────────────
-app.use(errorHandler);
-
-// ── Database + Start ───────────────────────────────────
-const PORT = process.env.PORT || 5000;
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✓ MongoDB connected');
-    app.listen(PORT, () => console.log(`✓ Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('✗ MongoDB connection error:', err.message);
-    process.exit(1);
+const start = async () => {
+  await connectDB();
+  app.listen(PORT, () => {
+    logger.info(`🚀 ArogyaScript API running on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
   });
+};
 
-module.exports = app;
+start().catch((err) => {
+  logger.error('Failed to start server:', err.message);
+  process.exit(1);
+});
