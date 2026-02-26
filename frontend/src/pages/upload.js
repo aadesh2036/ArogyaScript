@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Layout from '@/components/Layout';
-import UploadZone from '@/components/UploadZone';
-import ResultCard from '@/components/ResultCard';
-import api from '@/lib/api';
+import Layout from '../components/Layout';
+import UploadZone from '../components/UploadZone';
+import ResultCard from '../components/ResultCard';
+import api from '../lib/api';
 import toast from 'react-hot-toast';
 
 export default function UploadPage() {

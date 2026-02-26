@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '@/components/Layout';
-import ResultCard from '@/components/ResultCard';
-import api from '@/lib/api';
+import Layout from '../../components/Layout';
+import ResultCard from '../../components/ResultCard';
+import api from '../../lib/api';
 
 export default function ResultPage() {
   const router = useRouter();

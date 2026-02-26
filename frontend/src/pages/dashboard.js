@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Layout from '@/components/Layout';
-import StatsCards from '@/components/dashboard/StatsCards';
-import RiskChart from '@/components/dashboard/RiskChart';
-import RecentTable from '@/components/dashboard/RecentTable';
-import api from '@/lib/api';
+import Layout from '../components/Layout';
+import StatsCards from '../components/dashboard/StatsCards';
+import RiskChart from '../components/dashboard/RiskChart';
+import RecentTable from '../components/dashboard/RecentTable';
+import api from '../lib/api';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState(null);
