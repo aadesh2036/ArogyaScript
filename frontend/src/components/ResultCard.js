@@ -115,20 +115,20 @@ export default function ResultCard({ data }) {
       animate="visible"
     >
       {/* ─── Header ─── */}
-      <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-6 flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold text-navy">
+      <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-base sm:text-lg font-semibold text-navy truncate">
             Prescription {prescriptionId}
           </h3>
-          <p className="text-sm text-primary-500/60">
+          <p className="text-xs sm:text-sm text-primary-500/60">
             {metadata?.ocrEngine} — {metadata?.processingTimeMs}ms
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <LottiePlayer name={riskLottie} size={36} autoplay loop />
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <LottiePlayer name={riskLottie} size={32} autoplay loop />
           <div className="text-center">
-            <div className="text-3xl font-bold text-navy">{riskScore?.overall ?? '—'}</div>
-            <span className={clsx('risk-badge text-xs px-2.5 py-1 rounded-full font-semibold', SEVERITY_COLORS[riskScore?.level] || 'bg-gray-100 text-gray-600')}>
+            <div className="text-2xl sm:text-3xl font-bold text-navy">{riskScore?.overall ?? '—'}</div>
+            <span className={clsx('risk-badge text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-semibold', SEVERITY_COLORS[riskScore?.level] || 'bg-gray-100 text-gray-600')}>
               {riskScore?.level?.toUpperCase() || 'PENDING'}
             </span>
           </div>
@@ -138,12 +138,12 @@ export default function ResultCard({ data }) {
       {/* ─── Images ─── */}
       <AnimatePresence>
         {(imageUrl || processedUrl) && (
-          <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-6">
+          <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <FiImage className="text-accent-600" size={18} />
-              <h4 className="font-semibold text-navy">Prescription Images</h4>
+              <h4 className="font-semibold text-navy text-sm sm:text-base">Prescription Images</h4>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               {imageUrl && (
                 <motion.div whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
                   <p className="text-xs font-medium text-primary-600/60 mb-2 uppercase tracking-wide">Original Image</p>
@@ -174,12 +174,12 @@ export default function ResultCard({ data }) {
 
       {/* ─── OCR Text ─── */}
       {ocrText && (
-        <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-6">
+        <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-4 sm:p-6">
           <div className="flex items-center gap-2 mb-3">
             <FiClipboard className="text-accent-600" size={18} />
-            <h4 className="font-semibold text-navy">OCR Extracted Text</h4>
+            <h4 className="font-semibold text-navy text-sm sm:text-base">OCR Extracted Text</h4>
           </div>
-          <pre className="glass rounded-xl p-4 text-sm text-primary-700 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto custom-scrollbar">
+          <pre className="glass rounded-xl p-3 sm:p-4 text-xs sm:text-sm text-primary-700 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto custom-scrollbar break-all">
             {ocrText}
           </pre>
           {data.ocrConfidence != null && (
@@ -192,13 +192,13 @@ export default function ResultCard({ data }) {
 
       {/* ─── Drug Flip Cards ─── */}
       {drugMeta.length > 0 && (
-        <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-6">
-          <div className="flex items-center gap-2 mb-5">
+        <motion.div variants={sectionVariants} className="glass-card rounded-2xl p-4 sm:p-6">
+          <div className="flex items-center gap-2 mb-4 sm:mb-5">
             <FiActivity className="text-accent-600" size={18} />
-            <h4 className="font-semibold text-navy">Extracted Medications</h4>
-            <span className="text-xs text-primary-400 ml-auto">Tap cards to explain</span>
+            <h4 className="font-semibold text-navy text-sm sm:text-base">Extracted Medications</h4>
+            <span className="hidden sm:inline text-xs text-primary-400 ml-auto">Tap cards to explain</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
             {drugMeta.map((dm, i) => (
               <DrugFlipCard
                 key={dm.entity.drugName + i}

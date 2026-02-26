@@ -144,14 +144,14 @@ export default function Layout({ children, title }) {
       {/* Main content */}
       <main className="flex-1 lg:ml-64 min-h-screen">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 glass border-b border-white/20 px-6 py-4 flex items-center gap-4">
-          <button className="lg:hidden text-navy" onClick={() => setSidebarOpen(true)}>
+        <header className="sticky top-0 z-20 glass border-b border-white/20 px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3 sm:gap-4">
+          <button className="lg:hidden text-navy p-1" onClick={() => setSidebarOpen(true)}>
             <FiMenu size={22} />
           </button>
-          {title && <h2 className="text-xl font-semibold text-navy">{title}</h2>}
+          {title && <h2 className="text-lg sm:text-xl font-semibold text-navy truncate">{title}</h2>}
         </header>
 
-        <div className="p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {children}
         </div>
       </main>

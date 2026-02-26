@@ -25,9 +25,9 @@ export default function RiskChart({ distribution }) {
   };
 
   return (
-    <div className="glass-card rounded-2xl p-6">
-      <h4 className="font-semibold text-navy mb-4">Risk Distribution</h4>
-      <div className="max-w-[280px] mx-auto">
+    <div className="glass-card rounded-2xl p-4 sm:p-6">
+      <h4 className="font-semibold text-navy mb-4 text-sm sm:text-base">Risk Distribution</h4>
+      <div className="max-w-[220px] sm:max-w-[280px] mx-auto">
         <Doughnut data={data} options={{ plugins: { legend: { position: 'bottom' } } }} />
       </div>
     </div>
