@@ -1,0 +1,74 @@
+{
+  "success": true,
+  "message": "Prescription analyzed successfully",
+  "data": {
+    "prescriptionId": "rx_abc123",
+    "patientInfo": {
+      "name": "John Doe",
+      "age": 45,
+      "gender": "M"
+    },
+    "extractedEntities": [
+      {
+        "drugName": "Amoxicillin",
+        "rawText": "Amoxicilin 500mg",
+        "dosage": "500mg",
+        "frequency": "TDS (three times daily)",
+        "duration": "7 days",
+        "confidence": 0.92
+      },
+      {
+        "drugName": "Ibuprofen",
+        "rawText": "Ibuprofen 400mg",
+        "dosage": "400mg",
+        "frequency": "BD (twice daily)",
+        "duration": "5 days",
+        "confidence": 0.97
+      },
+      {
+        "drugName": "Metformin",
+        "rawText": "Metformin 500mg",
+        "dosage": "500mg",
+        "frequency": "OD (once daily)",
+        "duration": "30 days",
+        "confidence": 0.95
+      }
+    ],
+    "interactions": [
+      {
+        "drug1": "Ibuprofen",
+        "drug2": "Metformin",
+        "severity": "moderate",
+        "description": "NSAIDs may enhance the hypoglycemic effect of Metformin and impair renal function.",
+        "recommendation": "Monitor blood glucose levels closely. Consider alternative analgesic."
+      }
+    ],
+    "riskScore": {
+      "overall": 42,
+      "level": "moderate",
+      "signals": [
+        {
+          "signal": "drug_interaction",
+          "weight": 25,
+          "detail": "1 moderate interaction detected between Ibuprofen and Metformin"
+        },
+        {
+          "signal": "polypharmacy",
+          "weight": 10,
+          "detail": "3 medications prescribed simultaneously"
+        },
+        {
+          "signal": "dosage_flag",
+          "weight": 7,
+          "detail": "Ibuprofen 400mg TDS approaches maximum daily dose"
+        }
+      ]
+    },
+    "metadata": {
+      "ocrEngine": "PaddleOCR",
+      "processingTimeMs": 2340,
+      "imageQuality": "good",
+      "timestamp": "2026-02-26T10:30:00.000Z"
+    }
+  }
+}

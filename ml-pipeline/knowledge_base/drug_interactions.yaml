@@ -1,0 +1,74 @@
+# Drug-Drug Interaction Knowledge Base
+# severity: low | moderate | high | critical
+interactions:
+  - drug1: Ibuprofen
+    drug2: Metformin
+    severity: moderate
+    description: "NSAIDs may enhance the hypoglycemic effect of Metformin and impair renal function."
+    recommendation: "Monitor blood glucose levels closely. Consider alternative analgesic."
+
+  - drug1: Ibuprofen
+    drug2: Warfarin
+    severity: critical
+    description: "NSAIDs significantly increase bleeding risk when combined with anticoagulants."
+    recommendation: "Avoid combination. Use Paracetamol as an alternative analgesic."
+
+  - drug1: Ibuprofen
+    drug2: Amlodipine
+    severity: low
+    description: "NSAIDs may reduce antihypertensive effect of calcium channel blockers."
+    recommendation: "Monitor blood pressure."
+
+  - drug1: Ibuprofen
+    drug2: Lisinopril
+    severity: moderate
+    description: "NSAIDs reduce ACE inhibitor efficacy and increase nephrotoxicity risk."
+    recommendation: "Monitor renal function and blood pressure."
+
+  - drug1: Metformin
+    drug2: Furosemide
+    severity: moderate
+    description: "Loop diuretics may increase risk of lactic acidosis with Metformin."
+    recommendation: "Monitor renal function. Adjust Metformin dose if needed."
+
+  - drug1: Warfarin
+    drug2: Aspirin
+    severity: high
+    description: "Increased bleeding risk with concurrent anticoagulant and antiplatelet therapy."
+    recommendation: "Avoid unless specifically indicated. Monitor INR closely."
+
+  - drug1: Warfarin
+    drug2: Omeprazole
+    severity: low
+    description: "PPIs may slightly increase Warfarin levels via CYP2C19 inhibition."
+    recommendation: "Monitor INR after starting or stopping PPI."
+
+  - drug1: Atorvastatin
+    drug2: Azithromycin
+    severity: moderate
+    description: "Macrolides may increase statin levels, raising risk of myopathy."
+    recommendation: "Monitor for muscle pain. Consider temporary statin hold."
+
+  - drug1: Ciprofloxacin
+    drug2: Tramadol
+    severity: high
+    description: "Combined use increases seizure risk significantly."
+    recommendation: "Avoid combination. Use alternative antibiotic or analgesic."
+
+  - drug1: Amlodipine
+    drug2: Simvastatin
+    severity: moderate
+    description: "Amlodipine increases Simvastatin levels; risk of rhabdomyolysis."
+    recommendation: "Limit Simvastatin to 20mg daily when combined with Amlodipine."
+
+  - drug1: Metoprolol
+    drug2: Amlodipine
+    severity: low
+    description: "Additive hypotensive and bradycardic effects."
+    recommendation: "Monitor heart rate and blood pressure."
+
+  - drug1: Losartan
+    drug2: Enalapril
+    severity: high
+    description: "Dual RAAS blockade increases risk of hyperkalemia and renal impairment."
+    recommendation: "Avoid combination. Choose one RAAS inhibitor."

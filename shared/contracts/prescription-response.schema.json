@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PrescriptionAnalysisResponse",
+  "description": "Shared contract for prescription analysis API response",
+  "type": "object",
+  "required": ["success", "data"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "message": { "type": "string" },
+    "data": {
+      "type": "object",
+      "required": ["prescriptionId", "extractedEntities", "riskScore", "interactions", "metadata"],
+      "properties": {
+        "prescriptionId": {
+          "type": "string",
+          "description": "Unique ID assigned to this prescription analysis"
+        },
+        "patientInfo": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "age": { "type": "integer" },
+            "gender": { "type": "string", "enum": ["M", "F", "Other"] }
+          }
+        },
+        "extractedEntities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["drugName", "dosage", "frequency", "duration"],
+            "properties": {
+              "drugName": {
+                "type": "string",
+                "description": "Normalized drug name"
+              },
+              "rawText": {
+                "type": "string",
+                "description": "Original OCR-extracted text"
+              },
+              "dosage": {
+                "type": "string",
+                "description": "e.g., 500mg, 10ml"
+              },
+              "frequency": {
+                "type": "string",
+                "description": "e.g., twice daily, BD, TDS"
+              },
+              "duration": {
+                "type": "string",
+                "description": "e.g., 5 days, 2 weeks"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "OCR + extraction confidence score"
+              }
+            }
+          }
+        },
+        "interactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["drug1", "drug2", "severity", "description"],
+            "properties": {
+              "drug1": { "type": "string" },
+              "drug2": { "type": "string" },
+              "severity": {
+                "type": "string",
+                "enum": ["low", "moderate", "high", "critical"]
+              },
+              "description": { "type": "string" },
+              "recommendation": { "type": "string" }
+            }
+          }
+        },
+        "riskScore": {
+          "type": "object",
+          "required": ["overall", "signals"],
+          "properties": {
+            "overall": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "level": {
+              "type": "string",
+              "enum": ["safe", "low", "moderate", "high", "critical"]
+            },
+            "signals": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "signal": { "type": "string" },
+                  "weight": { "type": "number" },
+                  "detail": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "ocrEngine": { "type": "string" },
+            "processingTimeMs": { "type": "integer" },
+            "imageQuality": { "type": "string", "enum": ["poor", "fair", "good", "excellent"] },
+            "timestamp": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    }
+  }
+}
