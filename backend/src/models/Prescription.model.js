@@ -150,6 +150,16 @@ const prescriptionSchema = new mongoose.Schema(
     imagePath: String,
     processedImagePath: String,
 
+    // ── YOLO Preprocessing ─────────────────────────
+    originalImagePath: String,
+    croppedImagePath: String,
+    cropStatus: {
+      type: String,
+      enum: ['success', 'fallback_original', 'pending'],
+      default: 'pending',
+    },
+    preprocessingTimestamp: Date,
+
     // OCR output
     ocrText: { type: String, default: '' },
     ocrConfidence: { type: Number, min: 0, max: 1 },
@@ -189,6 +199,7 @@ const prescriptionSchema = new mongoose.Schema(
 
     // Pipeline tracking
     pipelineStatus: {
+      preprocessing: moduleStatusSchema,
       ocr: moduleStatusSchema,
       structuring: moduleStatusSchema,
       anomaly: moduleStatusSchema,

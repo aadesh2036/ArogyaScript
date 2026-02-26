@@ -4,6 +4,7 @@
  * Each module is fault-tolerant — failure in one module does NOT block the rest.
  *
  * Steps:
+ *   0. Preprocessing → YOLO crop to isolate prescription document
  *   1. OCR → extract text from image
  *   2. Structuring → extract entities from text
  *   3. Anomaly detection → ML pipeline (preferred) or rule-based fallback
@@ -13,6 +14,7 @@
  */
 
 const Prescription = require('../models/Prescription.model');
+const { cropPrescription } = require('./cropperService');
 const { callOCR } = require('./ocrClient');
 const { callMLPipeline } = require('./mlClient');
 const { structureText } = require('./structuringService');
@@ -36,6 +38,7 @@ async function runPipeline(prescriptionId, imagePath) {
   log.info('Pipeline started', { prescriptionId, imagePath });
 
   const pipelineStatus = {
+    preprocessing: { status: 'skipped', durationMs: 0 },
     ocr: { status: 'skipped', durationMs: 0 },
     structuring: { status: 'skipped', durationMs: 0 },
     anomaly: { status: 'skipped', durationMs: 0 },
@@ -53,35 +56,121 @@ async function runPipeline(prescriptionId, imagePath) {
   let riskScore = { overall: 0, level: 'safe', signals: [] };
   let interventions = [];
 
+  // The image file that OCR will actually process (may be cropped)
+  let ocrInputPath = imagePath;
+
   // ── Update status to processing ──
   await safeUpdate(prescriptionId, {
     status: 'processing',
     'pipelineStatus.overall': 'processing',
+    originalImagePath: imagePath,
   });
 
   // ═══════════════════════════════════════════════
-  // STEP 1: OCR
+  // STEP 0: YOLO Preprocessing (crop prescription document)
+  // Non-critical — pipeline ALWAYS continues even if this fails
   // ═══════════════════════════════════════════════
   try {
-    const ocrResult = await callOCR(imagePath);
-    ocrText = ocrResult.text || '';
-    ocrConfidence = ocrResult.confidence || 0;
-    ocrEngine = ocrResult.engine || 'none';
+    const cropResult = await cropPrescription(imagePath);
+    pipelineStatus.preprocessing = {
+      status: cropResult.cropStatus === 'success' ? 'success' : 'failed',
+      error: cropResult.error,
+      durationMs: cropResult.durationMs,
+    };
+
+    const updatePayload = {
+      cropStatus: cropResult.cropStatus,
+      preprocessingTimestamp: new Date(),
+      'pipelineStatus.preprocessing': pipelineStatus.preprocessing,
+    };
+
+    if (cropResult.cropStatus === 'success' && cropResult.croppedFileName) {
+      ocrInputPath = cropResult.croppedFileName;
+      updatePayload.croppedImagePath = cropResult.croppedFileName;
+      log.info('Preprocessing: crop succeeded, using cropped image for OCR', {
+        prescriptionId,
+        croppedFile: cropResult.croppedFileName,
+        durationMs: cropResult.durationMs,
+      });
+    } else {
+      log.warn('Preprocessing: crop failed, using original image for OCR', {
+        prescriptionId,
+        reason: cropResult.error,
+        durationMs: cropResult.durationMs,
+      });
+    }
+
+    await safeUpdate(prescriptionId, updatePayload);
+  } catch (err) {
+    log.error('Preprocessing step crashed', { error: err.message });
+    pipelineStatus.preprocessing = { status: 'failed', error: err.message, durationMs: 0 };
+    await safeUpdate(prescriptionId, {
+      cropStatus: 'fallback_original',
+      preprocessingTimestamp: new Date(),
+      'pipelineStatus.preprocessing': pipelineStatus.preprocessing,
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  // STEP 1: OCR (dual-path: run on BOTH original + cropped, merge results)
+  // This prevents text loss from aggressive cropping.
+  // ═══════════════════════════════════════════════
+  try {
+    const hasCrop = ocrInputPath !== imagePath;
+
+    // Always OCR the original image
+    const originalOcr = await callOCR(imagePath);
+    const originalText = originalOcr.text || '';
+    const originalConf = originalOcr.confidence || 0;
+    ocrEngine = originalOcr.engine || 'none';
+
+    log.info('OCR on original done', { textLen: originalText.length, confidence: originalConf });
+
+    let croppedText = '';
+    let croppedConf = 0;
+
+    // If we have a cropped image, OCR it too
+    if (hasCrop) {
+      try {
+        const croppedOcr = await callOCR(ocrInputPath);
+        croppedText = croppedOcr.text || '';
+        croppedConf = croppedOcr.confidence || 0;
+        log.info('OCR on cropped done', { textLen: croppedText.length, confidence: croppedConf });
+      } catch (cropOcrErr) {
+        log.warn('OCR on cropped image failed, using original only', { error: cropOcrErr.message });
+      }
+    }
+
+    // Merge: pick the longer/better text, or combine unique lines
+    if (hasCrop && croppedText && originalText) {
+      ocrText = mergeOcrTexts(originalText, croppedText);
+      ocrConfidence = Math.max(originalConf, croppedConf);
+      log.info('OCR merged', { originalLen: originalText.length, croppedLen: croppedText.length, mergedLen: ocrText.length });
+    } else if (croppedText && croppedConf > originalConf) {
+      ocrText = croppedText;
+      ocrConfidence = croppedConf;
+    } else {
+      ocrText = originalText;
+      ocrConfidence = originalConf;
+    }
+
     pipelineStatus.ocr = {
-      status: ocrResult.status === 'success' ? 'success' : 'failed',
-      error: ocrResult.error,
-      durationMs: ocrResult.durationMs,
+      status: (originalOcr.status === 'success' || croppedText) ? 'success' : 'failed',
+      error: originalOcr.error,
+      durationMs: originalOcr.durationMs,
+      mode: hasCrop ? 'dual' : 'single',
     };
 
     await safeUpdate(prescriptionId, {
       ocrText,
       ocrConfidence,
       'metadata.ocrEngine': ocrEngine,
+      'metadata.ocrMode': hasCrop ? 'dual' : 'single',
       'pipelineStatus.ocr': pipelineStatus.ocr,
-      ...(ocrResult.processedImagePath ? { processedImagePath: ocrResult.processedImagePath } : {}),
+      ...(originalOcr.processedImagePath ? { processedImagePath: originalOcr.processedImagePath } : {}),
     });
 
-    log.info('OCR step done', { status: ocrResult.status, textLen: ocrText.length });
+    log.info('OCR step done', { status: pipelineStatus.ocr.status, textLen: ocrText.length, mode: hasCrop ? 'dual' : 'single' });
   } catch (err) {
     log.error('OCR step crashed', { error: err.message });
     pipelineStatus.ocr = { status: 'failed', error: err.message, durationMs: 0 };
@@ -236,9 +325,10 @@ async function runPipeline(prescriptionId, imagePath) {
   // ═══════════════════════════════════════════════
   // STEP 6: Finalize
   // ═══════════════════════════════════════════════
-  // Gemini failure does NOT count against overall pipeline status
+  // Gemini + preprocessing failures do NOT count against overall pipeline status
+  const nonCriticalSteps = new Set(['gemini', 'overall', 'preprocessing']);
   const nonGeminiStatuses = Object.entries(pipelineStatus)
-    .filter(([k, v]) => k !== 'gemini' && k !== 'overall' && typeof v === 'object');
+    .filter(([k, v]) => !nonCriticalSteps.has(k) && typeof v === 'object');
 
   const anyFailed = nonGeminiStatuses.some(([, m]) => m.status === 'failed');
   const allFailed = nonGeminiStatuses.every(([, m]) => m.status === 'failed');
@@ -279,6 +369,43 @@ async function safeUpdate(prescriptionId, update) {
     log.error('DB update failed', { prescriptionId, error: err.message });
     return null;
   }
+}
+
+/**
+ * Merge OCR texts from original and cropped images.
+ * Combines unique lines (normalized) so no text is lost due to aggressive cropping.
+ * The cropped text usually has less noise, while the original has full coverage.
+ *
+ * Strategy: use original as base, then append any unique lines from cropped.
+ */
+function mergeOcrTexts(originalText, croppedText) {
+  const normalize = (line) => line.trim().toLowerCase().replace(/\s+/g, ' ');
+
+  const originalLines = originalText.split('\n').map((l) => l.trim()).filter(Boolean);
+  const croppedLines = croppedText.split('\n').map((l) => l.trim()).filter(Boolean);
+
+  // Build a set of normalized lines from the original
+  const seenNormalized = new Set(originalLines.map(normalize));
+
+  // Start with all original lines
+  const merged = [...originalLines];
+
+  // Append unique lines from cropped that aren't already in original
+  for (const line of croppedLines) {
+    const norm = normalize(line);
+    if (norm && !seenNormalized.has(norm)) {
+      // Check for partial substring matches (fuzzy dedup)
+      const isSubstring = [...seenNormalized].some(
+        (existing) => existing.includes(norm) || norm.includes(existing)
+      );
+      if (!isSubstring) {
+        merged.push(line);
+        seenNormalized.add(norm);
+      }
+    }
+  }
+
+  return merged.join('\n');
 }
 
 module.exports = { runPipeline };

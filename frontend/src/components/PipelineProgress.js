@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { FiCheckCircle, FiXCircle, FiLoader, FiClock } from 'react-icons/fi';
 
 const STEPS = [
+  { key: 'preprocessing', label: 'YOLO Document Crop', optional: true },
   { key: 'ocr', label: 'OCR Text Extraction' },
   { key: 'structuring', label: 'Drug Entity Extraction' },
   { key: 'anomaly', label: 'Anomaly Detection' },

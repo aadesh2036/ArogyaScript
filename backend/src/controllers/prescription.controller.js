@@ -20,6 +20,8 @@ exports.uploadPrescription = async (req, res, next) => {
       prescriptionId,
       userId: req.user._id,
       imagePath,
+      originalImagePath: imagePath,
+      cropStatus: 'pending',
       status: 'processing',
       pipelineStatus: { overall: 'queued' },
     });
@@ -74,7 +76,7 @@ exports.getPrescriptions = async (req, res, next) => {
   try {
     const prescriptions = await Prescription.find({ userId: req.user._id })
       .sort({ createdAt: -1 })
-      .select('prescriptionId riskScore.overall riskScore.level extractedEntities status pipelineStatus createdAt');
+      .select('prescriptionId riskScore.overall riskScore.level extractedEntities status pipelineStatus createdAt originalImagePath croppedImagePath cropStatus');
 
     const data = prescriptions.map((p) => ({
       prescriptionId: p.prescriptionId,

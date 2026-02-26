@@ -413,28 +413,58 @@ async function runGeminiReasoning({ prescriptionId, ocrText, entities, interacti
 
   const maxRetries = parseInt(process.env.GEMINI_MAX_RETRIES || '2', 10);
   const timeoutMs = parseInt(process.env.GEMINI_TIMEOUT_MS || '15000', 10);
-  const modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash-lite';
+  const primaryModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+
+  // Fallback model chain — if primary hits quota, try alternatives with separate quotas
+  const MODEL_CHAIN = [
+    primaryModel,
+    ...['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite']
+      .filter((m) => m !== primaryModel),
+  ];
 
   let reasoning;
   let geminiError = null;
 
   try {
-    // Initialize client
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({
-      model: modelName,
-      systemInstruction: SYSTEM_PROMPT,
-    });
-
     const userPrompt = buildUserPrompt(payload);
-    log.info('Calling Gemini', { prescriptionId, model: modelName, entityCount: payload.entities.length });
+    let rawText = null;
+    let usedModel = null;
 
-    const rawText = await callWithRetry(model, userPrompt, maxRetries, timeoutMs);
+    // Try each model in the chain until one succeeds
+    for (const modelName of MODEL_CHAIN) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          systemInstruction: SYSTEM_PROMPT,
+        });
+
+        log.info('Calling Gemini', { prescriptionId, model: modelName, entityCount: payload.entities.length });
+        rawText = await callWithRetry(model, userPrompt, maxRetries, timeoutMs);
+        usedModel = modelName;
+        break; // success — stop trying
+      } catch (modelErr) {
+        const isQuota =
+          modelErr.message?.includes('429') ||
+          modelErr.message?.includes('RESOURCE_EXHAUSTED') ||
+          modelErr.message?.includes('quota');
+        if (isQuota && modelName !== MODEL_CHAIN[MODEL_CHAIN.length - 1]) {
+          log.warn(`Model ${modelName} quota exhausted — trying next fallback`, { prescriptionId });
+          continue;
+        }
+        throw modelErr; // non-quota error or last model — propagate
+      }
+    }
+
+    if (!rawText) throw new Error('All Gemini models exhausted');
+
     reasoning = parseGeminiResponse(rawText);
     reasoning.gemini_status = 'success';
+    reasoning.model_used = usedModel;
 
     log.info('Gemini reasoning complete', {
       prescriptionId,
+      model: usedModel,
       durationMs: Date.now() - start,
       interventionCount: reasoning.interventions?.length,
       uncertaintyFlagCount: reasoning.uncertainty_flags?.length,

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Layout from '@/components/Layout';
 import PipelineProgress from '@/components/PipelineProgress';
 import ResultCard from '@/components/ResultCard';
+import PreprocessingCard from '@/components/PreprocessingCard';
 import LottiePlayer from '@/components/LottiePlayer';
 import api, { pollPipelineStatus } from '@/lib/api';
 
@@ -62,7 +63,10 @@ export default function ResultPage() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <ResultCard data={data} />
+            <div className="space-y-6">
+              <PreprocessingCard data={data} />
+              <ResultCard data={data} />
+            </div>
           </motion.div>
         ) : (
           <motion.div
