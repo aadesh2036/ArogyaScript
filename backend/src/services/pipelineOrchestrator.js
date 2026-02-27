@@ -6,10 +6,10 @@
  * Steps:
  *   0. Preprocessing → YOLO crop to isolate prescription document
  *   1. OCR → extract text from image
- *   2. Structuring → extract entities from text
+ *   2. Entity extraction → rule regex + Groq LLM fallback
  *   3. Anomaly detection → ML pipeline (preferred) or rule-based fallback
  *   4. Intervention engine → generate clinical suggestions
- *   5. Gemini reasoning → explainability, interaction explanations, uncertainty flags (non-critical)
+ *   5. AI Reasoning → Groq (Llama3) explainability with rule-based fallback (non-critical)
  *   6. Persist → save all results to MongoDB
  */
 
@@ -20,7 +20,7 @@ const { callMLPipeline } = require('./mlClient');
 const { structureText } = require('./structuringService');
 const { detectAnomalies } = require('./anomalyDetector');
 const { generateInterventions } = require('./interventionEngine');
-const { runGeminiReasoning } = require('./geminiClient');
+const { runReasoning } = require('./reasoning/reasoningService');
 const { createLogger } = require('../utils/logger');
 
 const log = createLogger('Pipeline');
@@ -178,10 +178,10 @@ async function runPipeline(prescriptionId, imagePath) {
   }
 
   // ═══════════════════════════════════════════════
-  // STEP 2: Rule-based structuring
+  // STEP 2: Entity extraction (rule-based + LLM fallback)
   // ═══════════════════════════════════════════════
   try {
-    const structResult = structureText(ocrText);
+    const structResult = await structureText(ocrText);
     entities = structResult.entities || [];
     pipelineStatus.structuring = {
       status: structResult.status === 'success' ? 'success' : 'failed',
@@ -286,38 +286,40 @@ async function runPipeline(prescriptionId, imagePath) {
   }
 
   // ═══════════════════════════════════════════════
-  // STEP 5: Gemini Explainable AI Reasoning (non-critical)
+  // STEP 5: Explainable AI Reasoning (non-critical)
+  // Uses Groq (Llama3) with rule-based fallback.
   // Pipeline will ALWAYS continue even if this step fails.
   // ═══════════════════════════════════════════════
   try {
-    const geminiStart = Date.now();
-    const geminiResult = await runGeminiReasoning({
+    const reasoningStart = Date.now();
+    const reasoningResult = await runReasoning({
       prescriptionId,
       ocrText,
       entities,
       interactions,
       anomalyFlags,
+      interventions,
     });
 
     pipelineStatus.gemini = {
-      status: geminiResult.gemini_status === 'success' ? 'success' : 'failed',
-      error: geminiResult.gemini_status !== 'success' ? (geminiResult.error || 'Gemini unavailable') : null,
-      durationMs: Date.now() - geminiStart,
+      status: reasoningResult.gemini_status === 'success' ? 'success' : 'failed',
+      error: reasoningResult.gemini_status !== 'success' ? (reasoningResult.error || 'Reasoning unavailable') : null,
+      durationMs: Date.now() - reasoningStart,
     };
 
-    // geminiClient handles its own DB persistence — we only update the pipelineStatus here
+    // reasoningService handles its own DB persistence — we only update the pipelineStatus here
     await safeUpdate(prescriptionId, {
       'pipelineStatus.gemini': pipelineStatus.gemini,
     });
 
-    log.info('Gemini step done', {
-      status: geminiResult.gemini_status,
-      interventionCount: geminiResult.interventions?.length,
+    log.info('Reasoning step done', {
+      status: reasoningResult.gemini_status,
+      interventionCount: reasoningResult.interventions?.length,
       durationMs: pipelineStatus.gemini.durationMs,
     });
   } catch (err) {
-    // This branch should never fire — runGeminiReasoning never throws
-    log.error('Gemini step unexpectedly crashed', { error: err.message });
+    // This branch should never fire — runReasoning never throws
+    log.error('Reasoning step unexpectedly crashed', { error: err.message });
     pipelineStatus.gemini = { status: 'failed', error: err.message, durationMs: 0 };
     await safeUpdate(prescriptionId, { 'pipelineStatus.gemini': pipelineStatus.gemini });
   }
