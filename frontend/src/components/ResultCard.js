@@ -24,6 +24,10 @@ const PRIORITY_COLORS = {
   low: 'bg-sky-50/80 text-sky-800 border-sky-200/60',
 };
 
+/** Minimum confidence to render a DrugFlipCard (hides header noise).
+ *  Aligns with backend MIN_ENTITY_CONFIDENCE. */
+const MIN_CARD_CONFIDENCE = 0.35;
+
 const FLAG_SEVERITY_COLORS = {
   critical: 'bg-red-50/80 border-red-200/60 text-red-800',
   warning: 'bg-amber-50/80 border-amber-200/60 text-amber-800',
@@ -70,20 +74,24 @@ export default function ResultCard({ data }) {
     prescriptionId, extractedEntities, interactions, riskScore,
     metadata, ocrText, anomalyFlags, interventions, pipelineStatus,
     imagePath, processedImagePath, geminiReasoning,
+    originalImageUrl, croppedImageUrl,
   } = data;
 
-  const imageUrl = imagePath ? `${API_BASE}/uploads/${imagePath.replace(/^uploads[\\/]/, '')}` : null;
-  const processedUrl = processedImagePath ? `${API_BASE}/uploads/${processedImagePath.replace(/^uploads[\\/]/, '')}` : null;
+  // Prefer Cloudinary URLs; fall back to local /uploads/ paths
+  const imageUrl = originalImageUrl || (imagePath ? `${API_BASE}/uploads/${imagePath.replace(/^uploads[\\/]/, '')}` : null);
+  const processedUrl = croppedImageUrl || (processedImagePath ? `${API_BASE}/uploads/${processedImagePath.replace(/^uploads[\\/]/, '')}` : null);
 
   // ── Gemini explanation look-ups ──
   const interactionExps = geminiReasoning?.interaction_explanations || [];
   const anomalyExps = geminiReasoning?.anomaly_explanations || [];
   const geminiInterventions = geminiReasoning?.interventions || [];
 
-  // ── Build per-drug data maps ──
+  // ── Build per-drug data maps (filter out low-confidence noise) ──
   const drugMeta = useMemo(() => {
     if (!extractedEntities) return [];
-    return extractedEntities.map((entity) => {
+    return extractedEntities
+      .filter((entity) => (entity.confidence ?? 1) >= MIN_CARD_CONFIDENCE)
+      .map((entity) => {
       const name = entity.drugName?.toLowerCase();
       return {
         entity,
@@ -340,7 +348,7 @@ export default function ResultCard({ data }) {
         )}
       </AnimatePresence>
 
-      {/* ─── Gemini Explainability ─── */}
+      {/* ─── AI Explainability ─── */}
       <AnimatePresence>
         {geminiReasoning && (
           <motion.div

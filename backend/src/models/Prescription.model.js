@@ -160,6 +160,16 @@ const prescriptionSchema = new mongoose.Schema(
     },
     preprocessingTimestamp: Date,
 
+    // ── Cloudinary Storage ─────────────────────────
+    originalImageUrl: String,
+    originalPublicId: String,
+    croppedImageUrl: String,
+    croppedPublicId: String,
+    cloudUploadStatus: {
+      original: { type: Boolean, default: false },
+      cropped: { type: Boolean, default: false },
+    },
+
     // OCR output
     ocrText: { type: String, default: '' },
     ocrConfidence: { type: Number, min: 0, max: 1 },

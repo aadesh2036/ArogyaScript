@@ -8,7 +8,7 @@ const STEPS = [
   { key: 'structuring', label: 'Drug Entity Extraction' },
   { key: 'anomaly', label: 'Anomaly Detection' },
   { key: 'intervention', label: 'Intervention Analysis' },
-  { key: 'gemini', label: 'Gemini AI Reasoning', optional: true },
+  { key: 'gemini', label: 'AI Reasoning', optional: true },
 ];
 
 const STATUS_ICON = {

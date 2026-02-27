@@ -1,6 +1,6 @@
 /**
  * ExplainabilityCard
- * Renders Gemini reasoning outputs as interactive flip cards.
+ * Renders AI reasoning outputs as interactive flip cards.
  * Shows: explainability summary, interaction explanations, anomaly explanations,
  * AI-generated interventions, and uncertainty flags.
  *
@@ -315,9 +315,9 @@ export default function ExplainabilityCard({ geminiReasoning }) {
           <FiCpu className="text-purple-600" size={18} />
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-navy">Gemini AI Explainability</h4>
+          <h4 className="font-semibold text-navy">AI Explainability</h4>
           <p className="text-xs text-primary-500/60 mt-0.5">
-            {reasoning_version || 'gemini_reasoning_v1'}
+            {reasoning_version || 'groq_reasoning_v1'}
             {durationMs ? ` · ${durationMs}ms` : ''}
           </p>
         </div>
@@ -329,7 +329,7 @@ export default function ExplainabilityCard({ geminiReasoning }) {
         <div className="flex items-start gap-2 mb-4 p-3 rounded-xl bg-amber-50/80 border border-amber-200/60 text-xs text-amber-800">
           <FiInfo size={14} className="shrink-0 mt-0.5" />
           <span>
-            Gemini API was unavailable. Explanations below were generated from rule-based fallback templates — less context-aware than live AI analysis.
+            AI reasoning was unavailable. Explanations below were generated from rule-based fallback templates — less context-aware than live AI analysis.
           </span>
         </div>
       )}
