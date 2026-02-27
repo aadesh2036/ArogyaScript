@@ -4,6 +4,7 @@
   "private": true,
   "description": "AI-powered Medical Prescription Intelligence System",
   "scripts": {
+    "postinstall": "npm run install:all",
     "backend:install": "cd backend && npm install",
     "backend:dev": "cd backend && npm run dev",
     "frontend:install": "cd frontend && npm install",
