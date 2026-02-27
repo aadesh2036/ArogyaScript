@@ -1,0 +1,419 @@
+
+> arogyascript-backend@1.0.0 dev
+> nodemon src/server.js
+
+[33m[nodemon] 3.1.14[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[2026-02-26T23:30:42.241Z] [INFO] [Pipeline] Pipeline started {"prescriptionId":"rx_e3729c55","imagePath":"rx_da0585b2-4f13-4610-a085-c51be2ddcf77.png"}
+[2026-02-26T23:30:42.318Z] [INFO] [CropperService] Running YOLO cropper {"originalPath":"D:\\ArogyaScript\\backend\\uploads\\rx_da0585b2-4f13-4610-a085-c51be2ddcf77.png","croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_da0585b2-4f13-4610-a085-c51be2ddcf77_cropped.png","python":"D:\\ArogyaScript\\.venv\\Scripts\\python.exe"}
+[2026-02-26T23:30:46.722Z] [INFO] [CropperService] Crop succeeded {"croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_da0585b2-4f13-4610-a085-c51be2ddcf77_cropped.png","durationMs":4404}
+[2026-02-26T23:30:46.722Z] [INFO] [Pipeline] Preprocessing: crop succeeded, using cropped image for OCR {"prescriptionId":"rx_e3729c55","croppedFile":"rx_da0585b2-4f13-4610-a085-c51be2ddcf77_cropped.png","durationMs":4404}
+[2026-02-26T23:30:55.754Z] [INFO] [OCRClient] OCR completed {"textLength":237,"confidence":0.624,"engine":"EasyOCR"}
+[2026-02-26T23:30:55.754Z] [INFO] [Pipeline] OCR on original done {"textLen":237,"confidence":0.624}
+[2026-02-26T23:30:57.339Z] [INFO] [OCRClient] OCR completed {"textLength":47,"confidence":0.67,"engine":"EasyOCR"}
+[2026-02-26T23:30:57.339Z] [INFO] [Pipeline] OCR on cropped done {"textLen":47,"confidence":0.67}
+[2026-02-26T23:30:57.340Z] [INFO] [Pipeline] OCR merged {"originalLen":237,"croppedLen":47,"mergedLen":256}
+[2026-02-26T23:30:57.428Z] [INFO] [Pipeline] OCR step done {"status":"success","textLen":256,"mode":"dual"}
+[2026-02-26T23:30:57.430Z] [INFO] [Structuring] Structuring completed {"entityCount":1,"lineCount":32}
+[2026-02-26T23:30:57.507Z] [INFO] [Pipeline] Structuring step done {"status":"success","entityCount":1}
+[2026-02-26T23:30:57.510Z] [WARN] [MLClient] ML pipeline returned non-OK {"status":422,"body":"{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"image\"],\"msg\":\"Field required\",\"input\":null}]}"}
+[2026-02-26T23:30:57.510Z] [WARN] [Pipeline] ML pipeline failed, falling back to rules {"error":"ML service error: 422"}
+[2026-02-26T23:30:57.511Z] [INFO] [AnomalyDetector] Anomaly detection completed {"flagCount":2,"interactionCount":0}
+[2026-02-26T23:30:57.511Z] [INFO] [Pipeline] Rule-based anomaly detection used {"flagCount":2}
+[2026-02-26T23:30:57.610Z] [INFO] [InterventionEngine] Interventions generated {"count":1}
+[2026-02-26T23:30:57.678Z] [INFO] [Pipeline] Intervention step done {"count":1}
+[2026-02-26T23:30:57.679Z] [INFO] [GeminiClient] Calling Gemini {"prescriptionId":"rx_e3729c55","model":"gemini-2.0-flash-lite","entityCount":1}
+[2026-02-26T23:30:57.679Z] [INFO] [GeminiClient] Gemini attempt 1/3
+[2026-02-26T23:30:58.331Z] [INFO] [GeminiClient] Gemini retry backoff 1000ms
+[2026-02-26T23:30:59.344Z] [INFO] [GeminiClient] Gemini attempt 2/3
+[2026-02-26T23:30:59.564Z] [WARN] [GeminiClient] Gemini call failed (attempt 2) {"error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:30:59.564Z] [ERROR] [GeminiClient] Gemini reasoning failed — using fallback {"prescriptionId":"rx_e3729c55","error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:30:59.754Z] [INFO] [GeminiClient] Gemini result persisted {"prescriptionId":"rx_e3729c55","status":"failed"}
+[2026-02-26T23:30:59.827Z] [INFO] [Pipeline] Gemini step done {"status":"failed","interventionCount":0,"durationMs":2076}
+[2026-02-26T23:30:59.908Z] [INFO] [Pipeline] Pipeline finished {"prescriptionId":"rx_e3729c55","overall":"completed","durationMs":17587,"entityCount":1,"flagCount":2,"interventionCount":1}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+✓ Server running on port 5000
+[2026-02-26T23:42:03.182Z] [INFO] [Pipeline] Pipeline started {"prescriptionId":"rx_ec240d6c","imagePath":"rx_1af7b4d5-bb96-4fc0-bb17-6b4e6451467a.png"}
+[2026-02-26T23:42:03.261Z] [INFO] [CropperService] Running YOLO cropper {"originalPath":"D:\\ArogyaScript\\backend\\uploads\\rx_1af7b4d5-bb96-4fc0-bb17-6b4e6451467a.png","croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_1af7b4d5-bb96-4fc0-bb17-6b4e6451467a_cropped.png","python":"D:\\ArogyaScript\\.venv\\Scripts\\python.exe"}
+[2026-02-26T23:42:07.501Z] [INFO] [CropperService] Crop succeeded {"croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_1af7b4d5-bb96-4fc0-bb17-6b4e6451467a_cropped.png","durationMs":4241}
+[2026-02-26T23:42:07.502Z] [INFO] [Pipeline] Preprocessing: crop succeeded, using cropped image for OCR {"prescriptionId":"rx_ec240d6c","croppedFile":"rx_1af7b4d5-bb96-4fc0-bb17-6b4e6451467a_cropped.png","durationMs":4241}
+[2026-02-26T23:42:14.560Z] [INFO] [OCRClient] OCR completed {"textLength":563,"confidence":0.763,"engine":"EasyOCR"}
+[2026-02-26T23:42:14.561Z] [INFO] [Pipeline] OCR on original done {"textLen":563,"confidence":0.763}
+[2026-02-26T23:42:14.700Z] [INFO] [OCRClient] OCR completed {"textLength":13,"confidence":0.962,"engine":"EasyOCR"}
+[2026-02-26T23:42:14.700Z] [INFO] [Pipeline] OCR on cropped done {"textLen":13,"confidence":0.962}
+[2026-02-26T23:42:14.700Z] [INFO] [Pipeline] OCR merged {"originalLen":563,"croppedLen":13,"mergedLen":563}
+[2026-02-26T23:42:14.773Z] [INFO] [Pipeline] OCR step done {"status":"success","textLen":563,"mode":"dual"}
+[2026-02-26T23:42:14.775Z] [INFO] [Structuring] Structuring completed {"entityCount":3,"lineCount":43}
+[2026-02-26T23:42:14.850Z] [INFO] [Pipeline] Structuring step done {"status":"success","entityCount":3}
+[2026-02-26T23:42:14.853Z] [WARN] [MLClient] ML pipeline returned non-OK {"status":422,"body":"{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"image\"],\"msg\":\"Field required\",\"input\":null}]}"}
+[2026-02-26T23:42:14.853Z] [WARN] [Pipeline] ML pipeline failed, falling back to rules {"error":"ML service error: 422"}
+[2026-02-26T23:42:14.854Z] [INFO] [AnomalyDetector] Anomaly detection completed {"flagCount":5,"interactionCount":0}
+[2026-02-26T23:42:14.854Z] [INFO] [Pipeline] Rule-based anomaly detection used {"flagCount":5}
+[2026-02-26T23:42:14.931Z] [INFO] [InterventionEngine] Interventions generated {"count":2}
+[2026-02-26T23:42:15.019Z] [INFO] [Pipeline] Intervention step done {"count":2}
+[2026-02-26T23:42:15.020Z] [INFO] [GeminiClient] Calling Gemini {"prescriptionId":"rx_ec240d6c","model":"gemini-2.5-flash-lite","entityCount":3}
+[2026-02-26T23:42:15.020Z] [INFO] [GeminiClient] Gemini attempt 1/3
+[2026-02-26T23:42:15.546Z] [WARN] [GeminiClient] Gemini call failed (attempt 1) {"error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:42:15.546Z] [ERROR] [GeminiClient] Gemini reasoning failed — using fallback {"prescriptionId":"rx_ec240d6c","error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:42:15.758Z] [INFO] [GeminiClient] Gemini result persisted {"prescriptionId":"rx_ec240d6c","status":"failed"}
+[2026-02-26T23:42:15.844Z] [INFO] [Pipeline] Gemini step done {"status":"failed","interventionCount":0,"durationMs":739}
+[2026-02-26T23:42:15.917Z] [INFO] [Pipeline] Pipeline finished {"prescriptionId":"rx_ec240d6c","overall":"completed","durationMs":12662,"entityCount":3,"flagCount":5,"interventionCount":2}
+[2026-02-26T23:52:02.356Z] [INFO] [Pipeline] Pipeline started {"prescriptionId":"rx_36dcf338","imagePath":"rx_3fb09e12-509b-4c44-b41f-04165653c7a7.png"}
+[2026-02-26T23:52:02.470Z] [INFO] [CropperService] Running YOLO cropper {"originalPath":"D:\\ArogyaScript\\backend\\uploads\\rx_3fb09e12-509b-4c44-b41f-04165653c7a7.png","croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_3fb09e12-509b-4c44-b41f-04165653c7a7_cropped.png","python":"D:\\ArogyaScript\\.venv\\Scripts\\python.exe"}
+[2026-02-26T23:52:06.682Z] [INFO] [CropperService] Crop succeeded {"croppedPath":"D:\\ArogyaScript\\backend\\uploads\\rx_3fb09e12-509b-4c44-b41f-04165653c7a7_cropped.png","durationMs":4213}
+[2026-02-26T23:52:06.682Z] [INFO] [Pipeline] Preprocessing: crop succeeded, using cropped image for OCR {"prescriptionId":"rx_36dcf338","croppedFile":"rx_3fb09e12-509b-4c44-b41f-04165653c7a7_cropped.png","durationMs":4213}
+[2026-02-26T23:52:13.649Z] [INFO] [OCRClient] OCR completed {"textLength":563,"confidence":0.763,"engine":"EasyOCR"}
+[2026-02-26T23:52:13.649Z] [INFO] [Pipeline] OCR on original done {"textLen":563,"confidence":0.763}
+[2026-02-26T23:52:13.776Z] [INFO] [OCRClient] OCR completed {"textLength":13,"confidence":0.962,"engine":"EasyOCR"}
+[2026-02-26T23:52:13.776Z] [INFO] [Pipeline] OCR on cropped done {"textLen":13,"confidence":0.962}
+[2026-02-26T23:52:13.776Z] [INFO] [Pipeline] OCR merged {"originalLen":563,"croppedLen":13,"mergedLen":563}
+[2026-02-26T23:52:13.872Z] [INFO] [Pipeline] OCR step done {"status":"success","textLen":563,"mode":"dual"}
+[2026-02-26T23:52:13.873Z] [INFO] [Structuring] Structuring completed {"entityCount":3,"lineCount":43}
+[2026-02-26T23:52:13.943Z] [INFO] [Pipeline] Structuring step done {"status":"success","entityCount":3}
+[2026-02-26T23:52:13.944Z] [WARN] [MLClient] ML pipeline returned non-OK {"status":422,"body":"{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"image\"],\"msg\":\"Field required\",\"input\":null}]}"}
+[2026-02-26T23:52:13.945Z] [WARN] [Pipeline] ML pipeline failed, falling back to rules {"error":"ML service error: 422"}
+[2026-02-26T23:52:13.945Z] [INFO] [AnomalyDetector] Anomaly detection completed {"flagCount":5,"interactionCount":0}
+[2026-02-26T23:52:13.945Z] [INFO] [Pipeline] Rule-based anomaly detection used {"flagCount":5}
+[2026-02-26T23:52:14.011Z] [INFO] [InterventionEngine] Interventions generated {"count":2}
+[2026-02-26T23:52:14.103Z] [INFO] [Pipeline] Intervention step done {"count":2}
+[2026-02-26T23:52:14.104Z] [INFO] [GeminiClient] Calling Gemini {"prescriptionId":"rx_36dcf338","model":"gemini-2.5-flash-lite","entityCount":3}
+[2026-02-26T23:52:14.104Z] [INFO] [GeminiClient] Gemini attempt 1/3
+[2026-02-26T23:52:14.720Z] [WARN] [GeminiClient] Gemini call failed (attempt 1) {"error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:52:14.720Z] [ERROR] [GeminiClient] Gemini reasoning failed — using fallback {"prescriptionId":"rx_36dcf338","error":"[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent: fetch failed"}
+[2026-02-26T23:52:14.970Z] [INFO] [GeminiClient] Gemini result persisted {"prescriptionId":"rx_36dcf338","status":"failed"}
+[2026-02-26T23:52:15.055Z] [INFO] [Pipeline] Gemini step done {"status":"failed","interventionCount":0,"durationMs":867}
+[2026-02-26T23:52:15.134Z] [INFO] [Pipeline] Pipeline finished {"prescriptionId":"rx_36dcf338","overall":"completed","durationMs":12699,"entityCount":3,"flagCount":5,"interventionCount":2}
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting child process[39m
+[32m[nodemon] starting `node src/server.js`[39m
+✓ MongoDB connected
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\ArogyaScript\backend\node_modules\express\lib\application.js:635:24)
+    at D:\ArogyaScript\backend\src\server.js:35:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 5000
+}
+
+Node.js v22.19.0
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m

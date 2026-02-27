@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import {
   FiUpload, FiGrid, FiLogOut, FiActivity, FiList,
@@ -51,12 +52,12 @@ export default function Layout({ children, title }) {
     <>
       {/* Brand */}
       <div className="p-6 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+        <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
           <FiActivity className="text-white" size={18} />
         </div>
         <div>
           <h1 className="text-lg font-bold text-white tracking-tight">ArogyaScript</h1>
-          <p className="text-ocean-200 text-[10px] tracking-wide uppercase">Prescription Intelligence</p>
+          <p className="text-primary-300/70 text-[10px] tracking-wide uppercase">Prescription Intelligence</p>
         </div>
       </div>
 
@@ -64,7 +65,7 @@ export default function Layout({ children, title }) {
       <nav className="flex-1 px-3 space-y-5 overflow-y-auto custom-scrollbar">
         {NAV_SECTIONS.map((section) => (
           <div key={section.title}>
-            <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-widest text-ocean-300/70">
+            <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-widest text-primary-400/50">
               {section.title}
             </p>
             <div className="space-y-0.5">
@@ -72,10 +73,10 @@ export default function Layout({ children, title }) {
                 <Link
                   key={href} href={href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
                     isActive(href)
-                      ? 'bg-white/20 text-white shadow-glass backdrop-blur-sm font-medium'
-                      : 'text-ocean-100 hover:bg-white/10 hover:text-white'
+                      ? 'bg-accent-500/20 text-white shadow-glass backdrop-blur-sm font-medium border border-accent-500/10'
+                      : 'text-primary-200/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <Icon size={17} /> {label}
@@ -87,19 +88,19 @@ export default function Layout({ children, title }) {
       </nav>
 
       {/* User */}
-      <div className="p-4 mx-3 mb-3 rounded-xl bg-white/10 backdrop-blur-sm">
+      <div className="p-4 mx-3 mb-3 rounded-xl bg-white/8 backdrop-blur-sm border border-white/5">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-ocean-400/30 flex items-center justify-center">
-            <FiUser size={14} className="text-ocean-100" />
+          <div className="w-8 h-8 rounded-full bg-accent-500/20 flex items-center justify-center">
+            <FiUser size={14} className="text-accent-300" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm text-white font-medium truncate">{user.name}</p>
-            <p className="text-[10px] text-ocean-200 truncate">{user.email}</p>
+            <p className="text-[10px] text-primary-300/60 truncate">{user.email}</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); router.push('/login'); }}
-          className="flex items-center gap-2 text-xs text-ocean-200 hover:text-white transition w-full"
+          className="flex items-center gap-2 text-xs text-primary-300/60 hover:text-white transition-colors duration-200 w-full"
         >
           <FiLogOut size={14} /> Sign out
         </button>
@@ -111,7 +112,13 @@ export default function Layout({ children, title }) {
     <div className="min-h-screen flex ocean-gradient-light">
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/40 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
       {/* Sidebar — desktop */}
@@ -137,14 +144,14 @@ export default function Layout({ children, title }) {
       {/* Main content */}
       <main className="flex-1 lg:ml-64 min-h-screen">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 glass border-b border-white/20 px-6 py-4 flex items-center gap-4">
-          <button className="lg:hidden text-primary-700" onClick={() => setSidebarOpen(true)}>
+        <header className="sticky top-0 z-20 glass border-b border-white/20 px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3 sm:gap-4">
+          <button className="lg:hidden text-navy p-1" onClick={() => setSidebarOpen(true)}>
             <FiMenu size={22} />
           </button>
-          {title && <h2 className="text-xl font-semibold text-primary-800">{title}</h2>}
+          {title && <h2 className="text-lg sm:text-xl font-semibold text-navy truncate">{title}</h2>}
         </header>
 
-        <div className="p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {children}
         </div>
       </main>

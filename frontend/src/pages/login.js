@@ -47,13 +47,13 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl glass-btn mb-4">
             <FiActivity className="text-white" size={28} />
           </div>
-          <h1 className="text-3xl font-bold text-primary-800">ArogyaScript</h1>
+          <h1 className="text-3xl font-bold text-navy">ArogyaScript</h1>
           <p className="text-primary-600/70 text-sm mt-1">Prescription Intelligence System</p>
         </div>
 
         {/* Glass Card */}
         <div className="glass rounded-2xl p-8 shadow-glass-lg">
-          <h2 className="text-xl font-semibold text-primary-800 mb-1">Welcome back</h2>
+          <h2 className="text-xl font-semibold text-navy mb-1">Welcome back</h2>
           <p className="text-sm text-primary-600/60 mb-6">Sign in to your account</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

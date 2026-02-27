@@ -66,7 +66,7 @@ export default function UploadPage() {
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-3">
               <FiImage className="text-primary-600" size={18} />
-              <h4 className="font-semibold text-primary-800">Uploaded Image Preview</h4>
+              <h4 className="font-semibold text-navy">Uploaded Image Preview</h4>
             </div>
             <div className="rounded-xl overflow-hidden border border-white/30 shadow-glass max-w-md mx-auto">
               <img src={previewUrl} alt="Uploaded prescription" className="w-full h-auto object-contain max-h-72 bg-white/50" />

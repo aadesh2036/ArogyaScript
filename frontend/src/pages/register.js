@@ -47,13 +47,13 @@ export default function RegisterPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl glass-btn mb-4">
             <FiActivity className="text-white" size={28} />
           </div>
-          <h1 className="text-3xl font-bold text-primary-800">ArogyaScript</h1>
+          <h1 className="text-3xl font-bold text-navy">ArogyaScript</h1>
           <p className="text-primary-600/70 text-sm mt-1">Create your account</p>
         </div>
 
         {/* Glass Card */}
         <div className="glass rounded-2xl p-8 shadow-glass-lg">
-          <h2 className="text-xl font-semibold text-primary-800 mb-1">Get started</h2>
+          <h2 className="text-xl font-semibold text-navy mb-1">Get started</h2>
           <p className="text-sm text-primary-600/60 mb-6">Join the prescription intelligence platform</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
