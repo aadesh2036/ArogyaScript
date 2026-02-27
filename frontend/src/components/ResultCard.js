@@ -74,10 +74,12 @@ export default function ResultCard({ data }) {
     prescriptionId, extractedEntities, interactions, riskScore,
     metadata, ocrText, anomalyFlags, interventions, pipelineStatus,
     imagePath, processedImagePath, geminiReasoning,
+    originalImageUrl, croppedImageUrl,
   } = data;
 
-  const imageUrl = imagePath ? `${API_BASE}/uploads/${imagePath.replace(/^uploads[\\/]/, '')}` : null;
-  const processedUrl = processedImagePath ? `${API_BASE}/uploads/${processedImagePath.replace(/^uploads[\\/]/, '')}` : null;
+  // Prefer Cloudinary URLs; fall back to local /uploads/ paths
+  const imageUrl = originalImageUrl || (imagePath ? `${API_BASE}/uploads/${imagePath.replace(/^uploads[\\/]/, '')}` : null);
+  const processedUrl = croppedImageUrl || (processedImagePath ? `${API_BASE}/uploads/${processedImagePath.replace(/^uploads[\\/]/, '')}` : null);
 
   // ── Gemini explanation look-ups ──
   const interactionExps = geminiReasoning?.interaction_explanations || [];

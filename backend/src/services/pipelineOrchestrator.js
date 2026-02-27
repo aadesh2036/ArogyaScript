@@ -21,6 +21,7 @@ const { structureText } = require('./structuringService');
 const { detectAnomalies } = require('./anomalyDetector');
 const { generateInterventions } = require('./interventionEngine');
 const { runReasoning } = require('./reasoning/reasoningService');
+const { uploadToCloudinary, cleanupTempFiles } = require('./cloudinaryService');
 const { createLogger } = require('../utils/logger');
 
 const log = createLogger('Pipeline');
@@ -92,6 +93,22 @@ async function runPipeline(prescriptionId, imagePath) {
         croppedFile: cropResult.croppedFileName,
         durationMs: cropResult.durationMs,
       });
+
+      // Upload cropped image to Cloudinary (non-blocking)
+      try {
+        const croppedCloud = await uploadToCloudinary(cropResult.croppedFileName, {
+          folder: 'arogyascript/cropped',
+          publicId: `${prescriptionId}_cropped`,
+        });
+        if (croppedCloud.success) {
+          updatePayload.croppedImageUrl = croppedCloud.url;
+          updatePayload.croppedPublicId = croppedCloud.publicId;
+          updatePayload['cloudUploadStatus.cropped'] = true;
+          log.info('Cropped image uploaded to Cloudinary', { prescriptionId, url: croppedCloud.url });
+        }
+      } catch (cloudErr) {
+        log.error('Cloudinary cropped upload failed', { prescriptionId, error: cloudErr.message });
+      }
     } else {
       log.warn('Preprocessing: crop failed, using original image for OCR', {
         prescriptionId,
@@ -353,6 +370,25 @@ async function runPipeline(prescriptionId, imagePath) {
     flagCount: anomalyFlags.length,
     interventionCount: interventions.length,
   });
+
+  // ═══════════════════════════════════════════════
+  // STEP 7: Cleanup temp files (non-blocking)
+  // Only remove local files if Cloudinary uploads succeeded
+  // ═══════════════════════════════════════════════
+  try {
+    const doc = await Prescription.findOne({ prescriptionId }).select('cloudUploadStatus originalImagePath croppedImagePath').lean();
+    if (doc?.cloudUploadStatus?.original && doc?.cloudUploadStatus?.cropped) {
+      cleanupTempFiles(doc.originalImagePath, doc.croppedImagePath);
+      log.info('Temp files cleaned up (both cloud uploads succeeded)', { prescriptionId });
+    } else if (doc?.cloudUploadStatus?.original) {
+      // Only original was uploaded — keep cropped locally as fallback
+      log.info('Keeping local files (only original uploaded to cloud)', { prescriptionId });
+    } else {
+      log.info('Keeping local files (cloud uploads incomplete)', { prescriptionId });
+    }
+  } catch (cleanupErr) {
+    log.warn('Temp file cleanup failed', { prescriptionId, error: cleanupErr.message });
+  }
 
   return finalDoc;
 }

@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const Prescription = require('../models/Prescription.model');
 const { runPipeline } = require('../services/pipelineOrchestrator');
+const { uploadToCloudinary } = require('../services/cloudinaryService');
 const { createLogger } = require('../utils/logger');
 
 const log = createLogger('PrescriptionCtrl');
@@ -15,12 +16,35 @@ exports.uploadPrescription = async (req, res, next) => {
     const prescriptionId = `rx_${uuidv4().slice(0, 8)}`;
     const imagePath = req.file.filename;
 
+    // Upload original image to Cloudinary (non-blocking for response)
+    let originalImageUrl = null;
+    let originalPublicId = null;
+    let cloudOriginalOk = false;
+
+    try {
+      const cloudResult = await uploadToCloudinary(imagePath, {
+        folder: 'arogyascript/originals',
+        publicId: prescriptionId,
+      });
+      if (cloudResult.success) {
+        originalImageUrl = cloudResult.url;
+        originalPublicId = cloudResult.publicId;
+        cloudOriginalOk = true;
+        log.info('Original uploaded to Cloudinary', { prescriptionId, url: originalImageUrl });
+      }
+    } catch (cloudErr) {
+      log.error('Cloudinary original upload failed', { prescriptionId, error: cloudErr.message });
+    }
+
     // Create initial DB record with 'processing' status
     const prescription = await Prescription.create({
       prescriptionId,
       userId: req.user._id,
       imagePath,
       originalImagePath: imagePath,
+      originalImageUrl,
+      originalPublicId,
+      'cloudUploadStatus.original': cloudOriginalOk,
       cropStatus: 'pending',
       status: 'processing',
       pipelineStatus: { overall: 'queued' },
@@ -34,6 +58,7 @@ exports.uploadPrescription = async (req, res, next) => {
         prescriptionId,
         status: 'processing',
         pipelineStatus: { overall: 'queued' },
+        originalImageUrl,
       },
     });
 
@@ -76,7 +101,7 @@ exports.getPrescriptions = async (req, res, next) => {
   try {
     const prescriptions = await Prescription.find({ userId: req.user._id })
       .sort({ createdAt: -1 })
-      .select('prescriptionId riskScore.overall riskScore.level extractedEntities status pipelineStatus createdAt originalImagePath croppedImagePath cropStatus');
+      .select('prescriptionId riskScore.overall riskScore.level extractedEntities status pipelineStatus createdAt originalImagePath croppedImagePath cropStatus originalImageUrl croppedImageUrl cloudUploadStatus');
 
     const data = prescriptions.map((p) => ({
       prescriptionId: p.prescriptionId,

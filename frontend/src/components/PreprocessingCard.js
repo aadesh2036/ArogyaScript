@@ -51,6 +51,8 @@ export default function PreprocessingCard({ data }) {
     originalImagePath,
     croppedImagePath,
     imagePath,
+    originalImageUrl,
+    croppedImageUrl,
     cropStatus = 'pending',
   } = data || {};
 
@@ -58,10 +60,10 @@ export default function PreprocessingCard({ data }) {
   const sliderRef = useRef(null);
   const [sliderPos, setSliderPos] = useState(50);
 
-  // Build full URLs — fall back to imagePath for older records
+  // Prefer Cloudinary URLs; fall back to local /uploads/ paths
   const imgFile = originalImagePath || imagePath;
-  const originalUrl = imgFile ? `${API_BASE}/uploads/${imgFile}` : null;
-  const croppedUrl  = croppedImagePath  ? `${API_BASE}/uploads/${croppedImagePath}`  : null;
+  const originalUrl = originalImageUrl || (imgFile ? `${API_BASE}/uploads/${imgFile}` : null);
+  const croppedUrl  = croppedImageUrl  || (croppedImagePath ? `${API_BASE}/uploads/${croppedImagePath}` : null);
 
   const badge = STATUS_BADGE[cropStatus] || STATUS_BADGE.pending;
   const BadgeIcon = badge.icon;
