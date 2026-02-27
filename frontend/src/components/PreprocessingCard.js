@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { FiCrop, FiImage, FiChevronRight, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/api\/?$/, '');
 
 const STATUS_BADGE = {
   success:          { label: 'Auto-Cropped', icon: FiCheckCircle, cls: 'bg-emerald-100 text-emerald-700 border-emerald-200' },

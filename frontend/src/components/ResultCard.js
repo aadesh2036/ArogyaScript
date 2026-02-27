@@ -7,7 +7,7 @@ import DrugFlipCard from './DrugFlipCard';
 import LottiePlayer from './LottiePlayer';
 import { FiImage, FiAlertTriangle, FiShield, FiActivity, FiClipboard } from 'react-icons/fi';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/api\/?$/, '');
 
 const SEVERITY_COLORS = {
   safe: 'bg-emerald-100 text-emerald-800',
